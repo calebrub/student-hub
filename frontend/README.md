@@ -1,59 +1,47 @@
-# StudentHubUi
+# Student Hub Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Angular frontend for Student Hub.
 
-## Development server
-
-To start a local development server, run:
+## Local development
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The app runs at `http://localhost:4200` and uses:
+- API: `http://localhost:8080/api/students` (development config)
 
-## Code scaffolding
+## Production API
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Production builds use:
+- `https://student-hub-lz3v.onrender.com/api/students`
+
+This is configured in:
+- `src/environments/environment.prod.ts`
+
+## GitHub Pages build
 
 ```bash
-ng generate component component-name
+npm run build:gh-pages
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This command builds with:
+- production configuration
+- base href: `/student-hub/`
 
-```bash
-ng generate --help
-```
+If your GitHub repository name is not `student-hub`, update the script in `package.json`:
+- `build:gh-pages`
 
-## Building
+## Deployment workflow
 
-To build the project run:
+GitHub Actions workflow:
+- `.github/workflows/deploy-frontend-gh-pages.yml`
 
-```bash
-ng build
-```
+It deploys on:
+- pushes to `main` that touch `frontend/**`
+- manual trigger (`workflow_dispatch`)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Notes
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Tab URL state uses hash routing (`#/generate`, `#/report`) so refresh works on static hosting like GitHub Pages.

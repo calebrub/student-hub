@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, computed, signal } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
 import { StudentService, Student } from './student.service';
 import { getHttpErrorMessage } from './http-error.util';
@@ -60,25 +60,22 @@ export class App implements OnInit {
 
   totalPages = computed(() => Math.ceil(this.totalElements() / this.size()));
 
-  constructor(
-    private studentService: StudentService,
-    private location: Location
-  ) {}
+  constructor(private studentService: StudentService) {}
 
   ngOnInit() {
     this.syncTabWithUrl();
     this.loadStudents();
   }
 
-  @HostListener('window:popstate')
-  onPopState(): void {
+  @HostListener('window:hashchange')
+  onHashChange(): void {
     this.syncTabWithUrl(false);
   }
 
   setTab(tab: AppTab, updateUrl = true) {
     this.activeTab.set(tab);
     if (updateUrl) {
-      this.location.go(`/${tab}`);
+      window.history.replaceState(null, '', `#/${tab}`);
     }
     if (tab === 'report') {
       this.loadStudents();
@@ -86,7 +83,7 @@ export class App implements OnInit {
   }
 
   private syncTabWithUrl(updateInvalidUrl = true): void {
-    const rawPath = this.location.path(false).split('?')[0].replace(/^\/+/, '');
+    const rawPath = window.location.hash.replace(/^#\/?/, '').split('?')[0];
     if (this.isAppTab(rawPath)) {
       this.setTab(rawPath, false);
       return;
@@ -94,7 +91,7 @@ export class App implements OnInit {
 
     this.setTab('generate', false);
     if (updateInvalidUrl) {
-      this.location.replaceState('/generate');
+      window.history.replaceState(null, '', '#/generate');
     }
   }
 
