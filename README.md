@@ -13,6 +13,28 @@ It combines:
 3. Upload the CSV into PostgreSQL.
 4. Query and export reports as CSV, Excel, or PDF.
 
+## Application stages
+
+### 1. Generation
+Creates sample student data in Excel format.
+
+![Generation stage](frontend/sceenshot/Generate%20Data.png)
+
+### 2. Processing
+Converts the Excel file into CSV.
+
+![Processing stage](frontend/sceenshot/Processing.png)
+
+### 3. Upload
+Loads CSV data into the database.
+
+![Upload stage](frontend/sceenshot/Upload.png)
+
+### 4. Report
+Displays filtered student records and export options.
+
+![Report stage](frontend/sceenshot/Report.png)
+
 ## Tech stack
 
 - Backend: Java 21, Spring Boot 3.4.x, Spring Data JPA, PostgreSQL, Apache POI, OpenCSV, OpenPDF
