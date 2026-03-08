@@ -1,0 +1,77 @@
+<div class="min-h-screen font-sans bg-slate-50 text-slate-800 pb-12">
+  <app-tab-nav [activeTab]="activeTab()" (tabChange)="setTab($event)"></app-tab-nav>
+
+  <main class="max-w-6xl mx-auto px-4 mt-8 relative">
+    @if (isLoading()) {
+      <div class="fixed inset-0 bg-white/60 backdrop-blur-[2px] z-50 flex flex-col items-center justify-center">
+        <div class="w-12 h-12 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+        <p class="mt-4 font-medium text-slate-600 animate-pulse">Processing dataset...</p>
+      </div>
+    }
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      @if (activeTab() === 'generate') {
+        <app-generate-tab
+          [recordCount]="recordCount()"
+          [isLoading]="isLoading()"
+          [message]="generateMsg()"
+          [canRetry]="canRetryGenerate()"
+          (recordCountChange)="setRecordCount($event)"
+          (generate)="onGenerate()"
+          (retry)="retryGenerate()"
+        ></app-generate-tab>
+      }
+
+      @if (activeTab() === 'process') {
+        <app-process-tab
+          [hasFile]="!!excelFile()"
+          [isLoading]="isLoading()"
+          [fileName]="excelFile()?.name ?? ''"
+          [message]="processMsg()"
+          [canRetry]="canRetryProcess()"
+          (fileSelected)="setExcelFile($event)"
+          (process)="onProcess()"
+          (retry)="retryProcess()"
+        ></app-process-tab>
+      }
+
+      @if (activeTab() === 'upload') {
+        <app-upload-tab
+          [hasFile]="!!csvFile()"
+          [isLoading]="isLoading()"
+          [fileName]="csvFile()?.name ?? ''"
+          [message]="uploadMsg()"
+          [canRetry]="canRetryUpload()"
+          (fileSelected)="setCsvFile($event)"
+          (upload)="onUpload()"
+          (retry)="retryUpload()"
+        ></app-upload-tab>
+      }
+
+      @if (activeTab() === 'report') {
+        <app-report-tab
+          [students]="students()"
+          [totalElements]="totalElements()"
+          [page]="page()"
+          [size]="size()"
+          [totalPages]="totalPages()"
+          [isTableLoading]="reportLoading()"
+          [isExporting]="!!exportLoadingFormat()"
+          [exportingFormat]="exportLoadingFormat()"
+          [searchId]="searchId()"
+          [filterClass]="filterClass()"
+          [message]="reportMsg()"
+          [canRetry]="!!reportRetryAction()"
+          [retryLabel]="getReportRetryLabel()"
+          [classes]="classes()"
+          (searchIdChange)="setSearchId($event)"
+          (filterClassChange)="setFilterClass($event)"
+          (pageChange)="onPageChange($event)"
+          (sizeChange)="onSizeChange($event)"
+          (export)="export($event)"
+          (retry)="retryReport()"
+        ></app-report-tab>
+      }
+    </div>
+  </main>
+</div>
